@@ -1,0 +1,54 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Отчет статического сканера SonarQube по проекту</title>
+    <style>
+        body { font-family: DejaVu Sans, sans-serif; zoom: 2;}
+        .red { color: red; }
+        .yellow { color: yellow; }
+        .blue { color: blue; }
+        .code-block { white-space: pre; font-family: monospace; }
+        .line-number {
+            display: inline-block;
+            width: 2em;
+            user-select: none;
+            opacity: 0.5; }   
+        
+        .page { page-break-before: always; margin-bottom: 50px; }
+
+        pre .line-number {
+            background-color: #f0f0f0;
+            border-right: 1px solid #ccc;
+            color: #777;
+            display: inline-block;
+            margin-right: 5px;
+            padding-right: 5px;
+        }
+
+        pre .codehilite {
+            background: #f8f8f8;
+            border: 1px solid #e1e1e1;
+            margin: 0 0 10px;
+            padding: 10px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Отчет статического сканера SonarQube по проекту {{ title }}</h1>
+    <h2>Всего срабатываний {{ issue_count }}</h2>
+    
+    
+    {% for page in pages %}
+    <div class="page">
+        <p>{{ page.severity }}</p>
+        <p>{{ page.component }}</p>
+        <p>{{ page.start_line }}</p>
+        <p>{{ page.end_line }}</p>
+        <pre class="code-block">{{ page.code_block }}</pre>
+        <p class="{{ page.color }}">{{ page.line }}</p>
+    </div>
+    {% endfor %}
+</body>
+</html>
