@@ -5,7 +5,7 @@ __pycache__/
 
 finall_report.txt
 *.json
-
+*.pdf
 # C extensions
 *.so
 
