@@ -2,30 +2,14 @@ import requests
 import re
 import os
 
-'''
-def translate_severity(severity):
-    if severity == 'CRITICAL':
-        severity = 'КРИТИЧНЫЙ'
-    elif severity == 'BLOCKER':
-        severity = 'БЛОКАДА'
-    elif severity == 'MINOR':
-        severity = 'НИЗКИЙ'
-    elif severity == 'INFO':
-        severity = 'ИНФО'
-    elif severity == 'MAJOR':
-        severity = 'ВЫСОКИЙ'
-    return severity
-'''
-
-
 def parse_issues(report, componentKeys, page):
 
-    # получаем jwt-токен для последующего обращения к api при импорте участков кода
+    # we get a jwt token for subsequent access to the api when importing code sections
 
     response = requests.post(url=f'{os.getenv("URL")}/api/authentication/login', data={'login':os.getenv("USERNAME"), 'password':os.getenv("PASSWORD")}) 
     jwt_token = requests.utils.dict_from_cookiejar(response.cookies)['JWT-SESSION']
     
-    # для более удобного парсинга записываем только нужную информацию в отдельный txt
+    # for more convenient parsing, we record only the necessary information in a separate txt
 
     if page == 1:
         with open('finall_report.txt', 'w') as finallReport:
@@ -48,8 +32,8 @@ def parse_issues(report, componentKeys, page):
                     endLine = pieceOfCode["endLine"]
             
                 if startLine > 5 :
-                #     если участок кода находится не в начале файла (на 1 строке), то захватываем ещё несколько
-                #     строк сверху и снизу (по пять)
+                #     if the code section is not at the beginning of the file (on 1 line), then grab a few more
+                #     rows at the top and bottom (five each)
                     code = requests.get(url=f'{os.getenv("URL")}/api/sources/lines?key={component}&from={startLine-5}&to={endLine+5}', 
                                     cookies={'JWT-SESSION':jwt_token})
                 else:
@@ -73,8 +57,8 @@ def parse_issues(report, componentKeys, page):
                     if countLineOfCode == 11: 
                         break
                         
-                # чтобы код внутри pdf отображался корректно, и не было смещений
-                # добавляем переносы строк, пока количество строк кода не будет равно 11
+                # so that the code inside the pdf is displayed correctly and there are no offsets
+                # add line breaks until the number of lines of code is 11
                 if countLineOfCode < 11:
                     while countLineOfCode != 11:
                         code += '\n'
