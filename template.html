@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Отчет статического сканера SonarQube по проекту</title>
+    <title>SonarQube project report</title>
     <style>
         body { font-family: DejaVu Sans, sans-serif; zoom: 2;}
         .red { color: red; }
@@ -36,8 +36,8 @@
     </style>
 </head>
 <body>
-    <h1>Отчет статического сканера SonarQube по проекту {{ title }}</h1>
-    <h2>Всего срабатываний {{ issue_count }}</h2>
+    <h1>The SonarQube static analyzer report for the «{{ title}}» project</h1>
+    <h2>Total issue count {{ issue_count }}</h2>
     
     
     {% for page in pages %}

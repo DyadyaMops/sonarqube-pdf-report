@@ -23,8 +23,8 @@ class PDFGenerator:
             start_line = lines_info[2]
             end_line = lines_info[3]
 
-            start_line_code = start_line.replace(' Начальная строка: ', '')
-            end_line_code = end_line.replace(' Конечная строка: ', '')
+            start_line_code = start_line.replace('Start Line: ', '')
+            end_line_code = end_line.replace('End Line: ', '')
             
 
             line_numbers = list(range(int(start_line_code)-4, int(end_line_code) + 6))

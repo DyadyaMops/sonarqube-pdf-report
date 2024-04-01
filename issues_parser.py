@@ -2,6 +2,7 @@ import requests
 import re
 import os
 
+'''
 def translate_severity(severity):
     if severity == 'CRITICAL':
         severity = 'КРИТИЧНЫЙ'
@@ -14,6 +15,7 @@ def translate_severity(severity):
     elif severity == 'MAJOR':
         severity = 'ВЫСОКИЙ'
     return severity
+'''
 
 
 def parse_issues(report, componentKeys, page):
@@ -36,7 +38,6 @@ def parse_issues(report, componentKeys, page):
         issues = report["issues"]
         for issue in issues:
             severity = issue["severity"]
-            severity = translate_severity(severity)
             component = issue["component"]
             pieceOfCode = None
             if "textRange" in issue:
@@ -85,10 +86,10 @@ def parse_issues(report, componentKeys, page):
             if typeOfIssue != 'CODE_SMELL':
             
                 if pieceOfCode != None:
-                    finallReport.write(f"Серьёзность: {severity}, Компонент: {component}, Начальная строка: {startLine}, Конечная строка: {endLine}, Участок кода:\n{code}, Описание: {discription}, Тип: {typeOfIssue}\n")
+                    finallReport.write(f"Severity: {severity}, Component: {component}, Start Line: {startLine}, End Line: {endLine}, Code:\n{code}, Description:  {discription}, Type: {typeOfIssue}\n")
                     
                 else:
-                    finallReport.write(f"Серьёзность: {severity}, Компонент: {component}, Описание: {discription}, Тип: {typeOfIssue}\n")
+                    finallReport.write(f"Severity: {severity}, Component: {component}, Description: {discription}, Type: {typeOfIssue}\n")
 
         finallReport.close()
 

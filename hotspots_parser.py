@@ -50,6 +50,6 @@ def parse_hotspots(report):
             message = hotspot["message"]
             
             if pieceOfCode != None:
-                finallReport.write(f"Опасность: {vulnerabilityProbability}, Компонент: {component}, Начальная строка: {startLine}, Конечная строка: {endLine}, Участок кода:\n{code}, Описание: {message}\n")
+                finallReport.write(f"Vulnerability Probability: {vulnerabilityProbability}, Component: {component}, Start Line:  {startLine}, End Line:  {endLine}, Code:\n{code}, Description: {message}\n")
             else:
-                finallReport.write(f"Опасность: {vulnerabilityProbability}, Компонент: {component}, Описание: {message}\n")
+                finallReport.write(f"Vulnerability Probability: {vulnerabilityProbability}, Component: {component}, Description: {message}\n")
