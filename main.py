@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
-
-import argparse
 import json
 import os
 import requests
 
 from dotenv import load_dotenv
-from constants import *
 from hotspots_parser import parse_hotspots
 from issues_parser import parse_issues
 from sonarqube import SonarCloudClient
@@ -18,7 +15,7 @@ if __name__ == "__main__":
 
     load_dotenv()
 
-    sonar = SonarCloudClient(sonarqube_url=URL, username=USERNAME, token=os.getenv("TOKEN"))
+    sonar = SonarCloudClient(sonarqube_url=os.getenv("URL"), username=os.getenv("USERNAME"), token=os.getenv("TOKEN"))
     sonarIssues = sonar.issues.search_issues(componentKeys=componentKeys, p=1, ps=500)
     total = sonarIssues['total']
     
@@ -35,9 +32,9 @@ if __name__ == "__main__":
             reportFile.close()
 
 
-    response = requests.post(url=f'{URL}/api/authentication/login', data={'login':'admin', 'password':os.getenv("PASSWORD")})
+    response = requests.post(url=f'{os.getenv("URL")}/api/authentication/login', data={'login':os.getenv("USERNAME"), 'password':os.getenv("PASSWORD")})
     jwt_token = requests.utils.dict_from_cookiejar(response.cookies)['JWT-SESSION']
-    response = requests.get(url=f"{URL}/api/hotspots/search?projectKey={componentKeys}&resolution=ACKNOWLEDGED&status=REVIEWED", cookies={'JWT-SESSION':jwt_token})
+    response = requests.get(url=f'{os.getenv("URL")}/api/hotspots/search?projectKey={componentKeys}&resolution=ACKNOWLEDGED&status=REVIEWED', cookies={'JWT-SESSION':jwt_token})
     
     with open('hotspots.json', 'w') as reportFile:
         data = response.json()

@@ -1,10 +1,9 @@
 import requests
 import re
 import os
-from constants import *
 
 def parse_hotspots(report):
-    response = requests.post(url=f'{URL}/api/authentication/login', data={'login':'admin', 'password':os.getenv("PASSWORD")})
+    response = requests.post(url=f'{os.getenv("URL")}/api/authentication/login', data={'login':os.getenv("USERNAME"), 'password':os.getenv("PASSWORD")})
     jwt_token = requests.utils.dict_from_cookiejar(response.cookies)['JWT-SESSION']
     with open('finall_report.txt', 'a') as finallReport:
         hotspots = report["hotspots"]
@@ -20,10 +19,10 @@ def parse_hotspots(report):
                     endLine = pieceOfCode["endLine"]
             
                 if startLine > 5 :
-                    code = requests.get(url=f'{URL}/api/sources/lines?key={component}&from={startLine-5}&to={endLine+5}', 
+                    code = requests.get(url=f'{os.getenv("URL")}/api/sources/lines?key={component}&from={startLine-5}&to={endLine+5}', 
                                     cookies={'JWT-SESSION':jwt_token})
                 else:
-                    code = requests.get(url=f'{URL}/api/sources/lines?key={component}&from={startLine}&to={endLine+5}', 
+                    code = requests.get(url=f'{os.getenv("URL")}/api/sources/lines?key={component}&from={startLine}&to={endLine+5}', 
                                     cookies={'JWT-SESSION':jwt_token})
                 try:
                     data = code.json()

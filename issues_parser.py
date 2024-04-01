@@ -2,8 +2,6 @@ import requests
 import re
 import os
 
-from constants import *
-
 def translate_severity(severity):
     if severity == 'CRITICAL':
         severity = 'КРИТИЧНЫЙ'
@@ -22,7 +20,7 @@ def parse_issues(report, componentKeys, page):
 
     # получаем jwt-токен для последующего обращения к api при импорте участков кода
 
-    response = requests.post(url=f'{URL}/api/authentication/login', data={'login':'admin', 'password':os.getenv("PASSWORD")}) 
+    response = requests.post(url=f'{os.getenv("URL")}/api/authentication/login', data={'login':os.getenv("USERNAME"), 'password':os.getenv("PASSWORD")}) 
     jwt_token = requests.utils.dict_from_cookiejar(response.cookies)['JWT-SESSION']
     
     # для более удобного парсинга записываем только нужную информацию в отдельный txt
@@ -51,10 +49,10 @@ def parse_issues(report, componentKeys, page):
                 if startLine > 5 :
                 #     если участок кода находится не в начале файла (на 1 строке), то захватываем ещё несколько
                 #     строк сверху и снизу (по пять)
-                    code = requests.get(url=f'{URL}/api/sources/lines?key={component}&from={startLine-5}&to={endLine+5}', 
+                    code = requests.get(url=f'{os.getenv("URL")}/api/sources/lines?key={component}&from={startLine-5}&to={endLine+5}', 
                                     cookies={'JWT-SESSION':jwt_token})
                 else:
-                    code = requests.get(url=f'{URL}/api/sources/lines?key={component}&from={startLine}&to={endLine+5}', 
+                    code = requests.get(url=f'{os.getenv("URL")}/api/sources/lines?key={component}&from={startLine}&to={endLine+5}', 
                                     cookies={'JWT-SESSION':jwt_token})
                 try:
                     data = code.json()
