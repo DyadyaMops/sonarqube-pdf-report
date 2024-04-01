@@ -11,7 +11,7 @@ from sonarqube import SonarCloudClient
 
 if __name__ == "__main__":
     
-    componentKeys = input('>> Введите название проекта: ')
+    componentKeys = input('>> Enter the name of the project: ')
 
     load_dotenv()
 
@@ -47,8 +47,12 @@ if __name__ == "__main__":
         reportFile.close()
 
     from pdf import PDFGenerator
-    pdf = PDFGenerator()
-    pdf.generate_report()
+    try:
+        pdf = PDFGenerator()
+        pdf.generate_report()
+        print('Your report has been successfully created!')
+    except Exception as e:
+        print('Something went wrong: ', e)
     
 
         
